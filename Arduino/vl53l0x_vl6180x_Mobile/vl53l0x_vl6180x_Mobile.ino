@@ -11,12 +11,14 @@ enum SensorState {
 // address we will assign if dual sensor is present
 #define LOX1_ADDRESS 0x30
 
-#define MOTOR_RIGHT 9
-#define MOTOR_LEFT 11
+#define MOTOR_RIGHT_PWM 9
+#define MOTOR_RIGHT_DIR 10
+#define MOTOR_LEFT_PWM 11
+#define MOTOR_LEFT_DIR 12
 // set the pins to shutdown
 #define SHT_VL 13
 
-const long MILLIS_BEFORE_CHANGE = 5000;
+const long MILLIS_BEFORE_CHANGE = 2500;
 
 long stateChangeTime = 0;
 SensorState LastState = SensorState::NONE;
@@ -36,7 +38,7 @@ void loop() {
 
 //Sensor Section
 SensorState read_dual_sensors() {
-  const int VL_MAX = 255, LOX_MAX = 800 ;//8190;
+  const int VL_MAX = 255, LOX_MAX = 650 ;//8190;
   int leftSensor, rightSensor;
   lox1.getSingleRangingMeasurement(&measure1); // pass in 'true' to get debug data printout!
 
@@ -44,12 +46,12 @@ SensorState read_dual_sensors() {
   rightSensor = vl.readRange();
   bool leftTrigger = leftSensor > 0 && leftSensor < LOX_MAX, rightTrigger = rightSensor > 0 && rightSensor < VL_MAX; 
   // print sensor one reading
-  Serial.print("1: " + String(leftSensor) + " Triggered - " + leftTrigger);
+  Serial.print("Left Sensor: " + String(leftSensor) + " Triggered - " + leftTrigger);
   
   Serial.print(" ");
 
   // print sensor two reading
-  Serial.print("2: " + String(rightSensor) + " Triggered - " + rightTrigger);  
+  Serial.print("Right Sensor: " + String(rightSensor) + " Triggered - " + rightTrigger);  
   Serial.println();
 
   return getState(leftTrigger, rightTrigger);
@@ -64,36 +66,56 @@ void updateSensorState(SensorState newState) {
 
 //Drive Section
 void selectDrive(SensorState triggeredState) {
+  Serial.println("Triggered State: " + String(triggeredState) + " Last State: " + String(LastState));
   if (triggeredState != LastState) {
     updateSensorState(triggeredState);
     
     if (triggeredState != SensorState::NONE) {
-      rotate45clockwise();
+      Rotate45clockwise();
     }
     else {
-      moveForwards();
+      ForwardFullPower();
     }
   }
-  else if ((stateChangeTime - MILLIS_BEFORE_CHANGE) > 0) {
+  else if ((millis() - stateChangeTime) > MILLIS_BEFORE_CHANGE) {
     if (triggeredState != SensorState::NONE) {
-      reverse();
+      ReverseFullPower();
+      delay(500);
+      Rotate45clockwise();
+      delay(500);
     }
   }
 }
 
-void rotate45clockwise() {
-  analogWrite(MOTOR_RIGHT, 40);
-  analogWrite(MOTOR_LEFT, 200);
+void Rotate45clockwise() {
+  SetMotorsForward();  
+  analogWrite(MOTOR_RIGHT_PWM, 40);
+  analogWrite(MOTOR_LEFT_PWM, 220);
+  Serial.println("Turning");
 }
 
-void moveForwards() {
-  analogWrite(MOTOR_RIGHT, 210);
-  analogWrite(MOTOR_LEFT, 220);
+void SetMotorsReverse()  {
+  digitalWrite(MOTOR_RIGHT_DIR, HIGH);
+  digitalWrite(MOTOR_LEFT_DIR, HIGH);
+  Serial.println("Reversing");
 }
 
-void reverse()  {
-  analogWrite(MOTOR_RIGHT, -220);
-  analogWrite(MOTOR_LEFT, -210);
+void SetMotorsForward()  {
+  digitalWrite(MOTOR_RIGHT_DIR, LOW);
+  digitalWrite(MOTOR_LEFT_DIR, LOW);
+  Serial.println("Forward");
+}
+
+void ReverseFullPower()  {
+  SetMotorsReverse();
+  analogWrite(MOTOR_RIGHT_PWM, 35);
+  analogWrite(MOTOR_LEFT_PWM, 45);
+}
+
+void ForwardFullPower()  {
+  SetMotorsForward();  
+  analogWrite(MOTOR_RIGHT_PWM, 210);
+  analogWrite(MOTOR_LEFT_PWM, 220);
 }
 
 //Setup section
@@ -108,6 +130,8 @@ void setup() {
   Serial.println("Starting...");
   setSensorIDs();
   initializeMotorPins();
+
+  ForwardFullPower();
 }
 
 void setSensorIDs() {
@@ -143,11 +167,11 @@ void setSensorIDs() {
 }
 
 void initializeMotorPins() {
-  pinMode(MOTOR_RIGHT, OUTPUT);
+  pinMode(MOTOR_RIGHT_PWM, OUTPUT);
   
   pinMode(10, OUTPUT);
   
-  pinMode(MOTOR_LEFT, OUTPUT);
+  pinMode(MOTOR_LEFT_PWM, OUTPUT);
   
   pinMode(12, OUTPUT);
 }
