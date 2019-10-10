@@ -1,5 +1,6 @@
-#include "Sense.h"
+#include "Constants.h"
 #include "Drive.h"
+#include "Sense.h"
 
 // address we will assign if dual sensor is present
 #define LOX1_ADDRESS 0x30

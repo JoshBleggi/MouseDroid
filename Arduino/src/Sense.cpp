@@ -10,15 +10,13 @@ long rightStateChangeTime = 0;
 Adafruit_VL6180X vl = Adafruit_VL6180X();
 Adafruit_VL53L0X lox1 = Adafruit_VL53L0X();
 
-// this holds the measurement
-VL53L0X_RangingMeasurementData_t measure1;
-
 SensorState read_dual_sensors();
 SensorState getState(short leftSensorReading, short rightSensorReading);
 bool isRobotStuck(short &leftSensorReading, short leftMaxReading, short &rightSensorReading, short rightMaxReading);
 bool isDifInThreshold(short &reading, short &lastMeasurement, long &lastChangeTime, short maxReading);
 
 SensorState Sense::read_dual_sensors() {
+  VL53L0X_RangingMeasurementData_t measure1;
   short leftSensorReading, rightSensorReading;
   lox1.getSingleRangingMeasurement(&measure1); // pass in 'true' to get debug data printout!
 

@@ -1,0 +1,9 @@
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
+
+#define MOTOR_RIGHT_PWM 9
+#define MOTOR_RIGHT_DIR 10
+#define MOTOR_LEFT_PWM 11
+#define MOTOR_LEFT_DIR 12
+
+#endif
