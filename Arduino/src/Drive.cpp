@@ -6,20 +6,23 @@ void selectDrive(SensorState triggeredState);
 
 void Drive::selectDrive(SensorState triggeredState) {
   Serial.println("Triggered State: " + String(triggeredState));
-  if (triggeredState == SensorState::STUCK) {
-    ReverseFullPower action;
-    action.Execute();
-    delay(500);
-    Rotate45clockwise action2;
-    action2.Execute();
-    delay(500);
-  }
-  if (triggeredState != SensorState::NONE) {
-    Rotate45clockwise action;
-    action.Execute();
-  }
-  else {
-    ForwardFullPower action;
-    action.Execute();
+  switch (triggeredState)
+  {
+    case SensorState::STUCK: 
+      ReverseFullPower reverse;
+      reverse.Execute();
+      delay(500);
+      Rotate45clockwise rotateRight;
+      rotateRight.Execute();
+      delay(500);
+      break;
+    case SensorState::NONE: 
+      Rotate45clockwise rotateRight;
+      rotateRight.Execute();
+      break;
+    default:
+      ForwardFullPower forward;
+      forward.Execute();
   }
 }
+
