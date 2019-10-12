@@ -72,7 +72,7 @@ bool Sense::isDifInThreshold(short &reading, short &lastMeasurement, long &lastC
     dif = dif * -1;
   }
   Serial.println("Dif: " + String(dif) + " Last Change Time: " + String(lastChangeTime));
-  if (dif < threshold && reading < maxReading && ((millis() - lastChangeTime) > MILLIS_BEFORE_CHANGE)) {
+  if (dif < threshold && reading <= maxReading && ((millis() - lastChangeTime) > MILLIS_BEFORE_CHANGE)) {
     Serial.println("STUCK STUCK STUCK STUCK STUCK");
     return true;
   }
