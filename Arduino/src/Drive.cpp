@@ -1,6 +1,5 @@
 #include "Drive.hpp"
 
-
 void Drive::selectDrive(SensorState triggeredState) {
   Serial.println("Triggered State: " + String(triggeredState));
   switch (triggeredState)
