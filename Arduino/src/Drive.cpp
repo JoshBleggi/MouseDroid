@@ -5,17 +5,20 @@ void Drive::selectDrive(SensorState triggeredState) {
   Serial.println("Triggered State: " + String(triggeredState));
   switch (triggeredState)
   {
-    case SensorState::STUCK: 
+    case SensorState::STUCK: {
       ReverseFullPower reverse;
       reverse.Execute();
       delay(500);
       Move(new Rotate45clockwise(), 500);
       break;
-    case SensorState::NONE: 
+    }
+    case SensorState::NONE: {
       Move(new ForwardFullPower());
       break;
-    default:
+    }
+    default: {
       Move(new Rotate45clockwise(), 500);
+    }
   }
 }
 
