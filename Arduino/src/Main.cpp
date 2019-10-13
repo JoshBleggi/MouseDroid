@@ -1,5 +1,6 @@
 #include "Constants.h"
-#include "Drive.h"
+#include "Drive.hpp"
+#include "Movement.hpp"
 #include "Sense.h"
 
 // address we will assign if dual sensor is present
