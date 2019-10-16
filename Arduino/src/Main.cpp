@@ -1,14 +1,14 @@
-#include "Constants.h"
+#include "Constants.hpp"
 #include "Drive.hpp"
 #include "Movement.hpp"
-#include "Sense.h"
+#include "Sensor.hpp"
 
 // address we will assign if dual sensor is present
 #define LOX1_ADDRESS 0x30
 // set the pins to shutdown
 #define SHT_VL 13
 
-Sense sensor;
+Sensor sensor;
 Drive driver;
 
 void setSensorIDs();
@@ -25,7 +25,7 @@ void loop() {
 void setup() {
   Serial.begin(115200);
 
-  sensor = Sense();
+  sensor = Sensor();
   driver = Drive();
 
   // wait until serial port opens for native USB devices

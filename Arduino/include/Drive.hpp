@@ -2,8 +2,8 @@
 #define DRIVE_H
 
 #include "Movement.hpp"
-#include "Sense.h"
-#include "SensorState.h"
+#include "Sensor.hpp"
+#include "SensorState.hpp"
 
 class Drive {
     public:

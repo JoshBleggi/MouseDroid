@@ -1,4 +1,4 @@
-#include "Sense.h"
+#include "Sensor.hpp"
 
 const short MILLIS_BEFORE_CHANGE = 2500;
 
@@ -15,7 +15,7 @@ SensorState getState(short leftSensorReading, short rightSensorReading);
 bool isRobotStuck(short &leftSensorReading, short leftMaxReading, short &rightSensorReading, short rightMaxReading);
 bool isDifInThreshold(short &reading, short &lastMeasurement, long &lastChangeTime, short maxReading);
 
-SensorState Sense::read_dual_sensors() {
+SensorState Sensor::read_dual_sensors() {
   VL53L0X_RangingMeasurementData_t measure1;
   short leftSensorReading, rightSensorReading;
   lox1.getSingleRangingMeasurement(&measure1); // pass in 'true' to get debug data printout!
@@ -34,7 +34,7 @@ SensorState Sense::read_dual_sensors() {
   return getState(leftSensorReading, rightSensorReading);
 }
 
-SensorState Sense::getState(short leftSensorReading, short rightSensorReading) {
+SensorState Sensor::getState(short leftSensorReading, short rightSensorReading) {
   const short LEFT_TRIGGER_MAX = 650, RIGHT_TRIGGER_MAX = 255;
   const short LEFT_MAX_READING = 8190, RIGHT_MAX_READING = 255;
 
@@ -57,7 +57,7 @@ SensorState Sense::getState(short leftSensorReading, short rightSensorReading) {
   }
 }
 
-bool Sense::isRobotStuck(short &leftSensorReading, short leftMaxReading, short &rightSensorReading, short rightMaxReading) {
+bool Sensor::isRobotStuck(short &leftSensorReading, short leftMaxReading, short &rightSensorReading, short rightMaxReading) {
   if (isDifInThreshold(leftSensorReading, lastMeasurementLeft, leftStateChangeTime, leftMaxReading) || 
       isDifInThreshold(leftSensorReading, lastMeasurementLeft, leftStateChangeTime, rightMaxReading)) {
     return true;
@@ -65,7 +65,7 @@ bool Sense::isRobotStuck(short &leftSensorReading, short leftMaxReading, short &
   return false;
 }
 
-bool Sense::isDifInThreshold(short &reading, short &lastMeasurement, long &lastChangeTime, short maxReading) {
+bool Sensor::isDifInThreshold(short &reading, short &lastMeasurement, long &lastChangeTime, short maxReading) {
   const byte threshold = 30;
   short dif = reading - lastMeasurement;
   if (dif < 0) {

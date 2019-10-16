@@ -2,8 +2,8 @@
 #define MOVEMENT_H
 
 #include "Arduino.h"
-#include "Constants.h"
-#include "SensorState.h"
+#include "Constants.hpp"
+#include "SensorState.hpp"
 
 class Movement {
     public:

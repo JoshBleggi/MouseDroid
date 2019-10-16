@@ -3,7 +3,7 @@
 
 #include <Adafruit_VL6180X.h>
 #include <Adafruit_VL53L0X.h>
-#include "SensorState.h"
+#include "SensorState.hpp"
 
 extern const short MILLIS_BEFORE_CHANGE;
 
@@ -18,7 +18,7 @@ extern Adafruit_VL53L0X lox1;
 // this holds the measurement
 extern VL53L0X_RangingMeasurementData_t measure1;
 
-class Sense {
+class Sensor {
     public:
         SensorState read_dual_sensors();
     private:
