@@ -5,5 +5,7 @@ enum SensorState {
   RIGHT,
   BOTH,
   NONE,
-  STUCK
+  STUCK,
+  BORED,
+  UNSET
 };

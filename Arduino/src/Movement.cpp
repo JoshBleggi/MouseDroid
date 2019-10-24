@@ -1,3 +1,4 @@
+#include "Arduino.h"
 #include "Movement.hpp"
 
 Movement::Movement() {
@@ -28,20 +29,89 @@ void ReverseFullPower::Execute() {
     analogWrite(MOTOR_LEFT_PWM, 45);
 }
 
-
 void Rotate45clockwise::Execute() {
     Movement::SetMotorsForward();  
     analogWrite(MOTOR_RIGHT_PWM, 40);
     analogWrite(MOTOR_LEFT_PWM, 220);
     Movement::InManeuver = true;
-    Serial.println("Turning");
+    Serial.println("Turning right");
 }
-
 
 void Rotate45CounterClockwise::Execute() {
     Movement::SetMotorsForward();  
     analogWrite(MOTOR_RIGHT_PWM, 220);
     analogWrite(MOTOR_LEFT_PWM, 40);
     Movement::InManeuver = true;
-    Serial.println("Turning");
+    Serial.println("Turning left");
+}
+
+Unstick::Unstick() {};
+
+void Unstick::Execute() {
+    ReverseFullPower rev = ReverseFullPower();
+    rev.Execute();  
+    delay(500);
+    Rotate45clockwise rot = Rotate45clockwise();
+    rot.Execute();  
+    delay(500);
+    Serial.println("Getting Unstuck");
+}
+
+Dance::Dance() {};
+
+void Dance::Execute() {
+    Movement::InManeuver = true;
+    Movement::SetMotorsForward();  
+    analogWrite(MOTOR_RIGHT_PWM, 110);
+    analogWrite(MOTOR_LEFT_PWM, 40);
+    delay(100);
+    analogWrite(MOTOR_RIGHT_PWM, 40);
+    analogWrite(MOTOR_LEFT_PWM, 110);
+    delay(100);
+    analogWrite(MOTOR_RIGHT_PWM, 110);
+    analogWrite(MOTOR_LEFT_PWM, 40);
+    delay(100);
+    analogWrite(MOTOR_RIGHT_PWM, 40);
+    analogWrite(MOTOR_LEFT_PWM, 110);
+    delay(100);
+    Movement::SetMotorsReverse(); 
+    analogWrite(MOTOR_RIGHT_PWM, 40);
+    analogWrite(MOTOR_LEFT_PWM, 110);
+    delay(100);
+    analogWrite(MOTOR_RIGHT_PWM, 110);
+    analogWrite(MOTOR_LEFT_PWM, 40);
+    delay(100);
+    analogWrite(MOTOR_RIGHT_PWM, 40);
+    analogWrite(MOTOR_LEFT_PWM, 110);
+    delay(100); 
+    analogWrite(MOTOR_RIGHT_PWM, 110);
+    analogWrite(MOTOR_LEFT_PWM, 40);
+    delay(100);    
+    Movement::SetMotorsForward();  
+    analogWrite(MOTOR_RIGHT_PWM, 110);
+    analogWrite(MOTOR_LEFT_PWM, 40);
+    delay(100);
+    analogWrite(MOTOR_RIGHT_PWM, 40);
+    analogWrite(MOTOR_LEFT_PWM, 110);
+    delay(100);
+    analogWrite(MOTOR_RIGHT_PWM, 110);
+    analogWrite(MOTOR_LEFT_PWM, 40);
+    delay(100);
+    analogWrite(MOTOR_RIGHT_PWM, 40);
+    analogWrite(MOTOR_LEFT_PWM, 110);
+    delay(100);
+    Movement::SetMotorsReverse(); 
+    analogWrite(MOTOR_RIGHT_PWM, 40);
+    analogWrite(MOTOR_LEFT_PWM, 110);
+    delay(100);
+    analogWrite(MOTOR_RIGHT_PWM, 110);
+    analogWrite(MOTOR_LEFT_PWM, 40);
+    delay(100);
+    analogWrite(MOTOR_RIGHT_PWM, 40);
+    analogWrite(MOTOR_LEFT_PWM, 110);
+    delay(100); 
+    analogWrite(MOTOR_RIGHT_PWM, 110);
+    analogWrite(MOTOR_LEFT_PWM, 40);
+    delay(100);
+    Serial.println("dancing");
 }

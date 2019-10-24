@@ -10,12 +10,12 @@ long rightStateChangeTime = 0;
 Adafruit_VL6180X vl = Adafruit_VL6180X();
 Adafruit_VL53L0X lox1 = Adafruit_VL53L0X();
 
-SensorState read_dual_sensors();
+SensorState Sense();
 SensorState getState(short leftSensorReading, short rightSensorReading);
 bool isRobotStuck(short &leftSensorReading, short leftMaxReading, short &rightSensorReading, short rightMaxReading);
 bool isDifInThreshold(short &reading, short &lastMeasurement, long &lastChangeTime, short maxReading);
 
-SensorState Sensor::read_dual_sensors() {
+Movement* EyeSensor::Sense() {
   VL53L0X_RangingMeasurementData_t measure1;
   short leftSensorReading, rightSensorReading;
   lox1.getSingleRangingMeasurement(&measure1); // pass in 'true' to get debug data printout!
@@ -34,30 +34,28 @@ SensorState Sensor::read_dual_sensors() {
   return getState(leftSensorReading, rightSensorReading);
 }
 
-SensorState Sensor::getState(short leftSensorReading, short rightSensorReading) {
+Movement* EyeSensor::getState(short leftSensorReading, short rightSensorReading) {
   const short LEFT_TRIGGER_MAX = 650, RIGHT_TRIGGER_MAX = 255;
   const short LEFT_MAX_READING = 8190, RIGHT_MAX_READING = 255;
 
   if (isRobotStuck(leftSensorReading, LEFT_MAX_READING, rightSensorReading, RIGHT_MAX_READING)) {
-    return SensorState::STUCK;
+    return new Unstick();
   }
   
   bool leftTrigger = leftSensorReading > 0 && leftSensorReading < LEFT_TRIGGER_MAX, rightTrigger = rightSensorReading > 0 && rightSensorReading < RIGHT_TRIGGER_MAX;
   if (leftTrigger && rightTrigger) {
-    return SensorState::BOTH;
+    return new Rotate45clockwise();
   }
-  else if (leftTrigger) {
-    return SensorState::LEFT;
+   if (leftTrigger) {
+    return  new Rotate45CounterClockwise();
   }
-  else if (rightTrigger) {
-    return SensorState::RIGHT;
+  if (rightTrigger) {
+    return new Rotate45clockwise();
   }
-  else {
-    return SensorState::NONE;
-  }
+  return nullptr;
 }
 
-bool Sensor::isRobotStuck(short &leftSensorReading, short leftMaxReading, short &rightSensorReading, short rightMaxReading) {
+bool EyeSensor::isRobotStuck(short &leftSensorReading, short leftMaxReading, short &rightSensorReading, short rightMaxReading) {
   if (isDifInThreshold(leftSensorReading, lastMeasurementLeft, leftStateChangeTime, leftMaxReading) || 
       isDifInThreshold(leftSensorReading, lastMeasurementLeft, leftStateChangeTime, rightMaxReading)) {
     return true;
@@ -65,7 +63,7 @@ bool Sensor::isRobotStuck(short &leftSensorReading, short leftMaxReading, short 
   return false;
 }
 
-bool Sensor::isDifInThreshold(short &reading, short &lastMeasurement, long &lastChangeTime, short maxReading) {
+bool EyeSensor::isDifInThreshold(short &reading, short &lastMeasurement, long &lastChangeTime, short maxReading) {
   const byte threshold = 30;
   short dif = reading - lastMeasurement;
   if (dif < 0) {

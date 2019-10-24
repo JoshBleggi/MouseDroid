@@ -1,7 +1,6 @@
 #ifndef MOVEMENT_H
 #define MOVEMENT_H
 
-#include "Arduino.h"
 #include "Constants.hpp"
 #include "SensorState.hpp"
 
@@ -28,13 +27,25 @@ class ReverseFullPower: public Movement {
         void Execute();
 };
 
-class Rotate45clockwise: public Movement {
+class Rotate45clockwise: virtual public Movement {
     public:
         void Execute();
 };
 
-class Rotate45CounterClockwise: public Movement {
+class Rotate45CounterClockwise: virtual public Movement {
     public:
+        void Execute();
+};
+
+class Unstick: public Rotate45clockwise, public Rotate45CounterClockwise {
+    public:
+        Unstick();
+        void Execute();
+};
+
+class Dance: public Rotate45clockwise, public Rotate45CounterClockwise {
+    public:
+        Dance();
         void Execute();
 };
 

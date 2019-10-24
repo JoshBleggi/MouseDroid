@@ -2,30 +2,38 @@
 #include "Drive.hpp"
 #include "Movement.hpp"
 #include "Sensor.hpp"
+#include "StateManager.hpp"
 
 // address we will assign if dual sensor is present
 #define LOX1_ADDRESS 0x30
 // set the pins to shutdown
 #define SHT_VL 13
 
-Sensor sensor;
+EyeSensor eyes;
+BoredomSensor borer;
 Drive driver;
 
 void setSensorIDs();
 void initializeMotorPins();
 
 void loop() {
-  SensorState triggeredState = sensor.read_dual_sensors();
+  Awareness.CurrentMovement = borer.Sense();
+  if (Awareness.CurrentMovement == nullptr) {
+    Awareness.CurrentMovement = eyes.Sense();
+  }
   
   delay(100);
-  driver.selectDrive(triggeredState);
+  Awareness.CurrentMovement->Execute();
 }
 
 //Setup section
 void setup() {
   Serial.begin(115200);
 
-  sensor = Sensor();
+  Awareness.CurrentMovement = new ForwardFullPower();
+
+  eyes = EyeSensor();
+  borer = BoredomSensor();
   driver = Drive();
 
   // wait until serial port opens for native USB devices

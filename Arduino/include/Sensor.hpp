@@ -3,6 +3,7 @@
 
 #include <Adafruit_VL6180X.h>
 #include <Adafruit_VL53L0X.h>
+#include "Movement.hpp"
 #include "SensorState.hpp"
 
 extern const short MILLIS_BEFORE_CHANGE;
@@ -20,11 +21,22 @@ extern VL53L0X_RangingMeasurementData_t measure1;
 
 class Sensor {
     public:
-        SensorState read_dual_sensors();
+        virtual Movement* Sense();
+};
+
+class EyeSensor: public Sensor {
+    public:
+        Movement* Sense();
     private:
-        SensorState getState(short leftSensorReading, short rightSensorReading);
+        Movement* getState(short leftSensorReading, short rightSensorReading);
         bool isRobotStuck(short &leftSensorReading, short leftMaxReading, short &rightSensorReading, short rightMaxReading);
         bool isDifInThreshold(short &reading, short &lastMeasurement, long &lastChangeTime, short maxReading);
+};
+
+
+class BoredomSensor: public Sensor {
+    public:
+        Movement* Sense();
 };
 
 #endif

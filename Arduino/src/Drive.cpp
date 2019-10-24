@@ -5,14 +5,20 @@ void Drive::selectDrive(SensorState triggeredState) {
   switch (triggeredState)
   {
     case SensorState::STUCK: {
-      ReverseFullPower reverse;
-      reverse.Execute();
-      delay(500);
+      Move(new ReverseFullPower(), 500);
       Move(new Rotate45clockwise(), 500);
       break;
     }
     case SensorState::NONE: {
       Move(new ForwardFullPower());
+      break;
+    }
+    case SensorState::LEFT: {
+      Move(new Rotate45CounterClockwise());
+      break;
+    }
+    case SensorState::BORED: {
+      Move(new Dance());
       break;
     }
     default: {
