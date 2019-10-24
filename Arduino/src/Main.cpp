@@ -1,8 +1,8 @@
+#include "Awareness.hpp"
 #include "Constants.hpp"
 #include "Drive.hpp"
 #include "Movement.hpp"
 #include "Sensor.hpp"
-#include "StateManager.hpp"
 
 // address we will assign if dual sensor is present
 #define LOX1_ADDRESS 0x30
@@ -17,20 +17,18 @@ void setSensorIDs();
 void initializeMotorPins();
 
 void loop() {
-  Awareness.CurrentMovement = borer.Sense();
-  if (Awareness.CurrentMovement == nullptr) {
-    Awareness.CurrentMovement = eyes.Sense();
+  AwarenessManager::getAwareness()->CurrentMovement = borer.Sense();
+  if (AwarenessManager::getAwareness()->CurrentMovement == nullptr) {
+    AwarenessManager::getAwareness()->CurrentMovement = eyes.Sense();
   }
   
   delay(100);
-  Awareness.CurrentMovement->Execute();
+  AwarenessManager::getAwareness()->CurrentMovement->Execute();
 }
 
 //Setup section
 void setup() {
   Serial.begin(115200);
-
-  Awareness.CurrentMovement = new ForwardFullPower();
 
   eyes = EyeSensor();
   borer = BoredomSensor();
