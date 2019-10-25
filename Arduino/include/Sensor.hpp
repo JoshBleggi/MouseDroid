@@ -4,7 +4,6 @@
 #include <Adafruit_VL6180X.h>
 #include <Adafruit_VL53L0X.h>
 #include "Movement.hpp"
-#include "SensorState.hpp"
 
 extern const short MILLIS_BEFORE_CHANGE;
 

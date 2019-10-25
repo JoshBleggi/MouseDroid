@@ -10,8 +10,8 @@ long rightStateChangeTime = 0;
 Adafruit_VL6180X vl = Adafruit_VL6180X();
 Adafruit_VL53L0X lox1 = Adafruit_VL53L0X();
 
-SensorState Sense();
-SensorState getState(short leftSensorReading, short rightSensorReading);
+Movement* Sense();
+Movement* getState(short leftSensorReading, short rightSensorReading);
 bool isRobotStuck(short &leftSensorReading, short leftMaxReading, short &rightSensorReading, short rightMaxReading);
 bool isDifInThreshold(short &reading, short &lastMeasurement, long &lastChangeTime, short maxReading);
 

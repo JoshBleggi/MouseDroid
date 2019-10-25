@@ -2,15 +2,14 @@
 #define MOVEMENT_H
 
 #include "Constants.hpp"
-#include "SensorState.hpp"
 
 class Movement {
     public:
+        bool InManeuver;
+
         virtual void Execute();
     
     protected:
-        bool InManeuver;
-
         Movement();
         ~Movement();
         void SetMotorsForward();
