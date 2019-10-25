@@ -12,6 +12,7 @@ class Movement {
         bool InManeuver;
 
         Movement();
+        ~Movement();
         void SetMotorsForward();
         void SetMotorsReverse();
 };

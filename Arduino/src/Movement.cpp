@@ -5,6 +5,10 @@ Movement::Movement() {
     Movement::InManeuver = false;
 }
 
+Movement::~Movement() { }
+
+void Movement::Execute() { }
+
 void Movement::SetMotorsReverse()  {
     digitalWrite(MOTOR_RIGHT_DIR, HIGH);
     digitalWrite(MOTOR_LEFT_DIR, HIGH);
