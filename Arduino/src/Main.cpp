@@ -1,6 +1,5 @@
 #include "Awareness.hpp"
 #include "Constants.hpp"
-#include "Drive.hpp"
 #include "Movement.hpp"
 #include "Sensor.hpp"
 
@@ -11,7 +10,6 @@
 
 EyeSensor eyes;
 BoredomSensor borer;
-Drive driver;
 
 void setSensorIDs();
 void initializeMotorPins();
@@ -21,8 +19,7 @@ void loop() {
   if (AwarenessManager::getAwareness()->CurrentMovement == nullptr) {
     AwarenessManager::getAwareness()->CurrentMovement = eyes.Sense();
   }
-  
-  delay(100);
+  delay(10);
   AwarenessManager::getAwareness()->CurrentMovement->Execute();
 }
 
@@ -32,7 +29,6 @@ void setup() {
 
   eyes = EyeSensor();
   borer = BoredomSensor();
-  driver = Drive();
 
   // wait until serial port opens for native USB devices
   while (! Serial) { delay(1); }
