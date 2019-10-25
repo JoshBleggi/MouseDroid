@@ -5,7 +5,7 @@
 
 class Movement {
     public:
-        bool InManeuver;
+        bool* InManeuver;
 
         virtual void Execute();
     

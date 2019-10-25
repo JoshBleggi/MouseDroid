@@ -7,6 +7,10 @@
 class Awareness {
     public:
         Awareness();
+        static void SetMovement(Movement*);
+        static void ExecuteMovement();
+
+    private:
         static Movement* CurrentMovement;
 };
 
@@ -15,8 +19,9 @@ class AwarenessManager {
         static Awareness* getAwareness();
 
     private:
-        static Awareness* instance;
         AwarenessManager();
+        ~AwarenessManager();
+        static Awareness* instance;
 };
 
 #endif

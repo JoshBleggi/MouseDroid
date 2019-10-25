@@ -15,16 +15,16 @@ void setSensorIDs();
 void initializeMotorPins();
 
 void loop() {
-  if (AwarenessManager::getAwareness()->CurrentMovement->InManeuver) {
-    AwarenessManager::getAwareness()->CurrentMovement = borer.Sense();
-    if (AwarenessManager::getAwareness()->CurrentMovement == nullptr) {
-      AwarenessManager::getAwareness()->CurrentMovement = eyes.Sense();
-    }
-  } else {
-    
-  }
+  //if (AwarenessManager::getAwareness()->CurrentMovement->InManeuver) {
+    //AwarenessManager::getAwareness()->CurrentMovement = borer.Sense();
+    //if (AwarenessManager::getAwareness()->CurrentMovement == nullptr) {
+      AwarenessManager::getAwareness()->SetMovement(eyes.Sense());
+    //}
+  //} else {
+
+  //}
   delay(10);
-  AwarenessManager::getAwareness()->CurrentMovement->Execute();
+  AwarenessManager::getAwareness()->ExecuteMovement();
 }
 
 //Setup section
