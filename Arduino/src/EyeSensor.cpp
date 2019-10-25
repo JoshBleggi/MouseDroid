@@ -52,7 +52,7 @@ Movement* EyeSensor::getState(short leftSensorReading, short rightSensorReading)
   if (rightTrigger) {
     return new Rotate45clockwise();
   }
-  return nullptr;
+  return new ForwardFullPower();
 }
 
 bool EyeSensor::isRobotStuck(short &leftSensorReading, short leftMaxReading, short &rightSensorReading, short rightMaxReading) {
