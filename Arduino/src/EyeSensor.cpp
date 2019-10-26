@@ -3,7 +3,7 @@
 const short MILLIS_BEFORE_CHANGE = 2500;
 
 short lastMeasurementLeft = 0;
-long lastMeasurementRight = 0;
+short lastMeasurementRight = 0;
 long leftStateChangeTime = 0;
 long rightStateChangeTime = 0;
 // objects for the vl53l0x
@@ -57,13 +57,13 @@ Movement* EyeSensor::getState(short leftSensorReading, short rightSensorReading)
 
 bool EyeSensor::isRobotStuck(short &leftSensorReading, short leftMaxReading, short &rightSensorReading, short rightMaxReading) {
   if (isDifInThreshold(leftSensorReading, lastMeasurementLeft, leftStateChangeTime, leftMaxReading) || 
-      isDifInThreshold(leftSensorReading, lastMeasurementLeft, leftStateChangeTime, rightMaxReading)) {
+      isDifInThreshold(rightSensorReading, lastMeasurementRight, leftStateChangeTime, rightMaxReading)) {
     return true;
   }
   return false;
 }
 
-bool EyeSensor::isDifInThreshold(short &reading, short &lastMeasurement, long &lastChangeTime, short maxReading) {
+bool EyeSensor::isDifInThreshold(short &reading, short &lastMeasurement, long lastChangeTime, short maxReading) {
   const byte threshold = 30;
   short dif = reading - lastMeasurement;
   if (dif < 0) {

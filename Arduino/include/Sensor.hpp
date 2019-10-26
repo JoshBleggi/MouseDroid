@@ -8,7 +8,7 @@
 extern const short MILLIS_BEFORE_CHANGE;
 
 extern short lastMeasurementLeft;
-extern long lastMeasurementRight;
+extern short lastMeasurementRight;
 extern long leftStateChangeTime;
 extern long rightStateChangeTime;
 // objects for the vl53l0x
@@ -29,7 +29,7 @@ class EyeSensor: public Sensor {
     private:
         Movement* getState(short leftSensorReading, short rightSensorReading);
         bool isRobotStuck(short &leftSensorReading, short leftMaxReading, short &rightSensorReading, short rightMaxReading);
-        bool isDifInThreshold(short &reading, short &lastMeasurement, long &lastChangeTime, short maxReading);
+        bool isDifInThreshold(short &reading, short &lastMeasurement, long lastChangeTime, short maxReading);
 };
 
 
