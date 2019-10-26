@@ -57,7 +57,7 @@ Movement* EyeSensor::getState(short leftSensorReading, short rightSensorReading)
 
 bool EyeSensor::isRobotStuck(short &leftSensorReading, short leftMaxReading, short &rightSensorReading, short rightMaxReading) {
   if (isDifInThreshold(leftSensorReading, lastMeasurementLeft, leftStateChangeTime, leftMaxReading) || 
-      isDifInThreshold(rightSensorReading, lastMeasurementRight, leftStateChangeTime, rightMaxReading)) {
+      isDifInThreshold(rightSensorReading, lastMeasurementRight, rightStateChangeTime, rightMaxReading)) {
     return true;
   }
   return false;
