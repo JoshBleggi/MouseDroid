@@ -3,12 +3,10 @@
 #include "Movement.hpp"
 
 Movement::Movement() {
-    *Movement::InManeuver = false;
+    Movement::InManeuver = false;
 }
 
-Movement::~Movement() { 
-    free(Movement::InManeuver);
-}
+Movement::~Movement() { }
 
 void Movement::Execute() { }
 
@@ -40,7 +38,7 @@ void Rotate45clockwise::Execute() {
     Movement::SetMotorsForward();  
     analogWrite(MOTOR_RIGHT_PWM, 40);
     analogWrite(MOTOR_LEFT_PWM, 220);
-    *Movement::InManeuver = true;
+    Movement::InManeuver = true;
     Serial.println("Turning right");
 }
 
@@ -48,7 +46,7 @@ void Rotate45CounterClockwise::Execute() {
     Movement::SetMotorsForward();  
     analogWrite(MOTOR_RIGHT_PWM, 220);
     analogWrite(MOTOR_LEFT_PWM, 40);
-    *Movement::InManeuver = true;
+    Movement::InManeuver = true;
     Serial.println("Turning left");
 }
 
@@ -67,7 +65,7 @@ void Unstick::Execute() {
 Dance::Dance() {};
 
 void Dance::Execute() {
-    *Movement::InManeuver = true;
+    Movement::InManeuver = true;
     Movement::SetMotorsForward();  
     analogWrite(MOTOR_RIGHT_PWM, 110);
     analogWrite(MOTOR_LEFT_PWM, 40);

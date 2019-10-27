@@ -15,7 +15,7 @@ Awareness* AwarenessManager::getAwareness()
 
 AwarenessManager::AwarenessManager() {}
 AwarenessManager::~AwarenessManager() {
-    free(AwarenessManager::instance);
+    delete(AwarenessManager::instance);
 }
 
 Movement* Awareness::CurrentMovement = nullptr;
@@ -23,7 +23,7 @@ Movement* Awareness::CurrentMovement = nullptr;
 Awareness::Awareness() {}
 
 void Awareness::SetMovement(Movement* newMovement) {
-    free(Awareness::CurrentMovement);
+    delete Awareness::CurrentMovement;
     Awareness::CurrentMovement = newMovement;
 }
 

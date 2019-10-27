@@ -15,6 +15,11 @@ Movement* getState(short leftSensorReading, short rightSensorReading);
 bool isRobotStuck(short &leftSensorReading, short leftMaxReading, short &rightSensorReading, short rightMaxReading);
 bool isDifInThreshold(short &reading, short &lastMeasurement, long &lastChangeTime, short maxReading);
 
+EyeSensor::EyeSensor() {
+  leftStateChangeTime = millis();
+  rightStateChangeTime = millis();
+}
+
 Movement* EyeSensor::Sense() {
   VL53L0X_RangingMeasurementData_t measure1;
   short leftSensorReading, rightSensorReading;
@@ -23,13 +28,10 @@ Movement* EyeSensor::Sense() {
   leftSensorReading = (short)measure1.RangeMilliMeter;
   rightSensorReading = (short)vl.readRange();
   // print sensor one reading
-  Serial.print("Left Sensor: " + String(leftSensorReading));
-  
-  Serial.print(" ");
+  Serial.println("Left Sensor: " + String(leftSensorReading));
 
   // print sensor two reading
-  Serial.print("Right Sensor: " + String(rightSensorReading));  
-  Serial.println();
+  Serial.println("Right Sensor: " + String(rightSensorReading));
 
   return getState(leftSensorReading, rightSensorReading);
 }
@@ -41,7 +43,7 @@ Movement* EyeSensor::getState(short leftSensorReading, short rightSensorReading)
   if (isRobotStuck(leftSensorReading, LEFT_MAX_READING, rightSensorReading, RIGHT_MAX_READING)) {
     return new Unstick();
   }
-  
+ 
   bool leftTrigger = leftSensorReading > 0 && leftSensorReading < LEFT_TRIGGER_MAX, rightTrigger = rightSensorReading > 0 && rightSensorReading < RIGHT_TRIGGER_MAX;
   if (leftTrigger && rightTrigger) {
     return new Rotate45clockwise();
@@ -51,7 +53,7 @@ Movement* EyeSensor::getState(short leftSensorReading, short rightSensorReading)
   }
   if (rightTrigger) {
     return new Rotate45clockwise();
-  }
+  } 
   return new ForwardFullPower();
 }
 
@@ -63,21 +65,21 @@ bool EyeSensor::isRobotStuck(short &leftSensorReading, short leftMaxReading, sho
   return false;
 }
 
-bool EyeSensor::isDifInThreshold(short &reading, short &lastMeasurement, long lastChangeTime, short maxReading) {
+bool EyeSensor::isDifInThreshold(short &reading, short &lastMeasurement, long &lastChangeTime, short maxReading) {
   const byte threshold = 30;
   short dif = reading - lastMeasurement;
   if (dif < 0) {
     dif = dif * -1;
   }
-  Serial.println("Dif: " + String(dif) + " Last Change Time: " + String(lastChangeTime));
+  //Serial.println("Dif: " + String(dif) + " Last Change Time: " + String(lastChangeTime));
   if (dif < threshold && reading <= maxReading && ((millis() - lastChangeTime) > MILLIS_BEFORE_CHANGE)) {
-    Serial.println("STUCK STUCK STUCK STUCK STUCK");
+    //Serial.println("STUCK STUCK STUCK STUCK STUCK");
     return true;
   }
   if (dif > threshold || reading >= maxReading){
     lastMeasurement = reading;
     lastChangeTime = millis();
   }
-  Serial.println("Not stuck");
+  //Serial.println("Not stuck");
   return false;
 }

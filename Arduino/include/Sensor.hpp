@@ -25,11 +25,12 @@ class Sensor {
 
 class EyeSensor: public Sensor {
     public:
+        EyeSensor();
         Movement* Sense();
     private:
         Movement* getState(short leftSensorReading, short rightSensorReading);
         bool isRobotStuck(short &leftSensorReading, short leftMaxReading, short &rightSensorReading, short rightMaxReading);
-        bool isDifInThreshold(short &reading, short &lastMeasurement, long lastChangeTime, short maxReading);
+        bool isDifInThreshold(short &reading, short &lastMeasurement, long &lastChangeTime, short maxReading);
 };
 
 

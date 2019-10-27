@@ -5,13 +5,13 @@
 
 class Movement {
     public:
-        bool* InManeuver;
+        bool InManeuver;
 
         virtual void Execute();
+        Movement();
+        virtual ~Movement();
     
     protected:
-        Movement();
-        ~Movement();
         void SetMotorsForward();
         void SetMotorsReverse();
 };
