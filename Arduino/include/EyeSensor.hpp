@@ -1,9 +1,9 @@
-#ifndef SENSE_H
-#define SENSE_H
+#ifndef EYESENSE_H
+#define EYESENSE_H
 
 #include <Adafruit_VL6180X.h>
 #include <Adafruit_VL53L0X.h>
-#include "Movement.hpp"
+#include "LaserReadingStruct.hpp"
 
 extern const short MILLIS_BEFORE_CHANGE;
 
@@ -18,25 +18,14 @@ extern Adafruit_VL53L0X lox1;
 // this holds the measurement
 extern VL53L0X_RangingMeasurementData_t measure1;
 
-class Sensor {
-    public:
-        virtual Movement* Sense();
-};
-
-class EyeSensor: public Sensor {
+class EyeSensor {
     public:
         EyeSensor();
-        Movement* Sense();
+        LaserReadingStruct Sense();
     private:
-        Movement* getState(short leftSensorReading, short rightSensorReading);
+        LaserReadingStruct getState(short leftSensorReading, short rightSensorReading);
         bool isRobotStuck(short &leftSensorReading, short leftMaxReading, short &rightSensorReading, short rightMaxReading);
         bool isDifInThreshold(short &reading, short &lastMeasurement, long &lastChangeTime, short maxReading);
-};
-
-
-class BoredomSensor: public Sensor {
-    public:
-        Movement* Sense();
 };
 
 #endif

@@ -1,4 +1,4 @@
-#include "Sensor.hpp"
+#include "EyeSensor.hpp"
 
 const short MILLIS_BEFORE_CHANGE = 2500;
 
@@ -10,8 +10,8 @@ long rightStateChangeTime = 0;
 Adafruit_VL6180X vl = Adafruit_VL6180X();
 Adafruit_VL53L0X lox1 = Adafruit_VL53L0X();
 
-Movement* Sense();
-Movement* getState(short leftSensorReading, short rightSensorReading);
+LaserReadingStruct Sense();
+LaserReadingStruct getState(short leftSensorReading, short rightSensorReading);
 bool isRobotStuck(short &leftSensorReading, short leftMaxReading, short &rightSensorReading, short rightMaxReading);
 bool isDifInThreshold(short &reading, short &lastMeasurement, long &lastChangeTime, short maxReading);
 
@@ -20,7 +20,7 @@ EyeSensor::EyeSensor() {
   rightStateChangeTime = millis();
 }
 
-Movement* EyeSensor::Sense() {
+LaserReadingStruct EyeSensor::Sense() {
   VL53L0X_RangingMeasurementData_t measure1;
   short leftSensorReading, rightSensorReading;
   lox1.getSingleRangingMeasurement(&measure1); // pass in 'true' to get debug data printout!
@@ -36,25 +36,16 @@ Movement* EyeSensor::Sense() {
   return getState(leftSensorReading, rightSensorReading);
 }
 
-Movement* EyeSensor::getState(short leftSensorReading, short rightSensorReading) {
+LaserReadingStruct EyeSensor::getState(short leftSensorReading, short rightSensorReading) {
   const short LEFT_TRIGGER_MAX = 650, RIGHT_TRIGGER_MAX = 255;
   const short LEFT_MAX_READING = 8190, RIGHT_MAX_READING = 255;
 
-  if (isRobotStuck(leftSensorReading, LEFT_MAX_READING, rightSensorReading, RIGHT_MAX_READING)) {
-    return new Unstick();
-  }
- 
-  bool leftTrigger = leftSensorReading > 0 && leftSensorReading < LEFT_TRIGGER_MAX, rightTrigger = rightSensorReading > 0 && rightSensorReading < RIGHT_TRIGGER_MAX;
-  if (leftTrigger && rightTrigger) {
-    return new Rotate45clockwise();
-  }
-   if (leftTrigger) {
-    return  new Rotate45CounterClockwise();
-  }
-  if (rightTrigger) {
-    return new Rotate45clockwise();
-  } 
-  return new ForwardFullPower();
+  LaserReadingStruct readings;
+  readings.Stuck = isRobotStuck(leftSensorReading, LEFT_MAX_READING, rightSensorReading, RIGHT_MAX_READING);
+  readings.LeftTrigger = leftSensorReading > 0 && leftSensorReading < LEFT_TRIGGER_MAX;
+  readings.RightTrigger = rightSensorReading > 0 && rightSensorReading < RIGHT_TRIGGER_MAX;
+
+  return readings;
 }
 
 bool EyeSensor::isRobotStuck(short &leftSensorReading, short leftMaxReading, short &rightSensorReading, short rightMaxReading) {

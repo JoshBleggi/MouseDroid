@@ -1,38 +1,27 @@
+#include "Arduino.h"
+#include "Arbitrator.hpp"
 #include "Awareness.hpp"
 #include "Constants.hpp"
-#include "Movement.hpp"
-#include "Sensor.hpp"
+#include "EyeSensor.hpp"
 
 // address we will assign if dual sensor is present
 #define LOX1_ADDRESS 0x30
 // set the pins to shutdown
 #define SHT_VL 13
 
-EyeSensor eyes;
-BoredomSensor borer;
+Arbitrator Arbitrator;
 
 void setSensorIDs();
 void initializeMotorPins();
 
 void loop() {
-  //if (AwarenessManager::getAwareness()->CurrentMovement->InManeuver) {
-    //AwarenessManager::getAwareness()->CurrentMovement = borer.Sense();
-    //if (AwarenessManager::getAwareness()->CurrentMovement == nullptr) {
-      AwarenessManager::getAwareness()->SetMovement(eyes.Sense());
-    //}
-  //} else {
-
-  //}
-  delay(10);
-  AwarenessManager::getAwareness()->ExecuteMovement();
+  Arbitrator.Run();
+  Arbitrator.GetAction()->Execute();
 }
 
 //Setup section
 void setup() {
   Serial.begin(115200);
-
-  eyes = EyeSensor();
-  borer = BoredomSensor();
 
   // wait until serial port opens for native USB devices
   while (! Serial) { delay(1); }
@@ -42,6 +31,9 @@ void setup() {
   Serial.println("Starting...");
   setSensorIDs();
   initializeMotorPins();
+
+  Arbitrator = new Arbitrator();
+  Arbitrator.AddBehavior(Motivate);
 }
 
 void setSensorIDs() {
