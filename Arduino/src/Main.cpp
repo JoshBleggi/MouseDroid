@@ -9,14 +9,14 @@
 // set the pins to shutdown
 #define SHT_VL 13
 
-Arbitrator Arbitrator;
+Arbitrator* thinkingCap;
 
 void setSensorIDs();
 void initializeMotorPins();
 
 void loop() {
-  Arbitrator.Run();
-  Arbitrator.GetAction()->Execute();
+  thinkingCap->Run();
+  thinkingCap->GetAction()->Execute();
 }
 
 //Setup section
@@ -32,8 +32,8 @@ void setup() {
   setSensorIDs();
   initializeMotorPins();
 
-  Arbitrator = new Arbitrator();
-  Arbitrator.AddBehavior(Motivate);
+  thinkingCap = new Arbitrator();
+  thinkingCap->SetBehavior(new Motivate(), 0);
 }
 
 void setSensorIDs() {

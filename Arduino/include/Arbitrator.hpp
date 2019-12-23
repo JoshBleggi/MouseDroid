@@ -1,22 +1,21 @@
 #ifndef ARBITRATOR_H
 #define ARBITRATOR_H
 
-#include <string>
-#include <vector>
+#include "Arduino.h"
 #include "Behavior.hpp"
 #include "Movement.hpp"
 
 class Arbitrator {
 
 private:
-	std::vector<MyBehavior*> behaviors;
+	Behavior* behaviors[2];
 	Movement* action;
 
 public:
 	Arbitrator();
 	virtual ~Arbitrator();
 
-	void AddBehavior(Behavior* behavior);
+	void SetBehavior(Behavior* behavior, int level);
 	void Run();
 	Movement* GetAction();
 };

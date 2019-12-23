@@ -2,7 +2,6 @@
 #include "EyeSensor.hpp"
 #include "LaserReadingStruct.hpp"
 
-class Motivate: public Behavior {
     void Motivate::Init() {
         subsume = true;
     };
@@ -24,4 +23,3 @@ class Motivate: public Behavior {
             action = new ForwardFullPower();
         }
     };
-};

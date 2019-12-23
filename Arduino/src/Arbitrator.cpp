@@ -2,32 +2,30 @@
 
 Arbitrator::Arbitrator() { }
 
-Arbitrator::~Arbitrator() {
+Arbitrator::~Arbitrator() { }
+
+void Arbitrator::SetBehavior(Behavior* behavior, int level)
+{
+	behaviors[level] = behavior;
+	behavior->Init();
 }
 
-void Arbitrator::addBehavior(Behavior* behavior)
+void Arbitrator::Run()
 {
-	behaviors.push_back(behavior);
-	behavior->init();
-}
-
-void MyArbitrator::run()
-{
-	action.turnCommand = 0;
-	action.forwardCommand = 0;
+	int numberOfBehaviors = sizeof(behaviors) / sizeof(behaviors[0]);
 	// iterate over all behaviors starting from the level 0.
-	for (int i = 0; i < behaviors.size(); i++)
+	for (int i = 0; i < numberOfBehaviors; i++)
 	{
-		behaviors[i]->run();
-		if (behaviors[i]->doesSubsume()) {
-			action = behaviors[i]->getAction();
-			Serial.Print("Level " + i);
+		behaviors[i]->Run();
+		if (behaviors[i]->DoesSubsume()) {
+			action = behaviors[i]->GetAction();
+			Serial.print("Level " + i);
 			break;
 		}
 	}
 }
 
-Action Arbitrator::GetAction()
+Movement* Arbitrator::GetAction()
 {
 	return action;
 }
