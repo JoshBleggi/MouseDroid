@@ -1,5 +1,4 @@
 #include "Arduino.h"
-#include "Awareness.hpp"
 #include "Movement.hpp"
 
 Movement::Movement() {
@@ -50,19 +49,19 @@ void Rotate45CounterClockwise::Execute() {
     Serial.println("Turning left");
 }
 
-Unstick::Unstick() {};
+Unstick::Unstick() { };
 
 void Unstick::Execute() {
-    ReverseFullPower rev = ReverseFullPower();
-    rev.Execute();  
+    ReverseFullPower* rev = new ReverseFullPower();
+    rev->Execute();  
     delay(500);
-    Rotate45clockwise rot = Rotate45clockwise();
-    rot.Execute();  
+    Rotate45clockwise* rot = new Rotate45clockwise();
+    rot->Execute();  
     delay(500);
     Serial.println("Getting Unstuck");
 }
 
-Dance::Dance() {};
+Dance::Dance() { };
 
 void Dance::Execute() {
     Movement::InManeuver = true;
@@ -119,5 +118,4 @@ void Dance::Execute() {
     analogWrite(MOTOR_LEFT_PWM, 40);
     delay(100);
     Serial.println("dancing");
-    AwarenessManager::getAwareness()->SetMovement(nullptr);
 }

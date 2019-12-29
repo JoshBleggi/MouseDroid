@@ -2,13 +2,21 @@
 #include "EyeSensor.hpp"
 #include "LaserReadingStruct.hpp"
 
+    
+    
+    Motivate::Motivate() { }
+
+    Motivate::~Motivate() { }
+
     void Motivate::Init() {
         subsume = true;
+        action = new ForwardFullPower();
     };
 
     void Motivate::Run() {
         EyeSensor* eyes = new EyeSensor();
         LaserReadingStruct readings = eyes->Sense();
+        delete action;
 
         if (readings.Stuck) {
             action = new Unstick();
@@ -22,4 +30,6 @@
         else {
             action = new ForwardFullPower();
         }
+
+        delete eyes;
     };

@@ -19,7 +19,7 @@ void Arbitrator::Run()
 		behaviors[i]->Run();
 		if (behaviors[i]->DoesSubsume()) {
 			action = behaviors[i]->GetAction();
-			Serial.print("Level " + i);
+			Serial.println("Level " + String(i));
 			break;
 		}
 	}
