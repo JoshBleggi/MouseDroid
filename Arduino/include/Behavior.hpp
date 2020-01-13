@@ -9,12 +9,14 @@ protected:
 	bool subsume;
     Movement* action;
 
+	void SetAction(Movement* newAction);
+
 public:
 	Behavior();
 	virtual ~Behavior();
 
 	virtual void Init() = 0;
-	virtual void Run() = 0;
+	virtual void Run(Movement* lastAction) = 0;
 
 	bool DoesSubsume();
 	Movement* GetAction();
@@ -28,7 +30,7 @@ class Motivate: public Behavior {
 		Motivate();
 		~Motivate();
 		void Init();
-		void Run();  
+		void Run(Movement* lastAction);  
 };
 
 #endif

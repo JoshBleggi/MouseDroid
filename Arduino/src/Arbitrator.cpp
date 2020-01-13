@@ -16,7 +16,7 @@ void Arbitrator::Run()
 	// iterate over all behaviors starting from the level 0.
 	for (int i = 0; i < numberOfBehaviors; i++)
 	{
-		behaviors[i]->Run();
+		behaviors[i]->Run(action);
 		if (behaviors[i]->DoesSubsume()) {
 			action = behaviors[i]->GetAction();
 			Serial.println("Level " + String(i));

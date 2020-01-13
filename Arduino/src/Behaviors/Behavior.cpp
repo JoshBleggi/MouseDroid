@@ -13,3 +13,9 @@ Movement* Behavior::GetAction()
 {
 	return action;
 }
+
+void Behavior::SetAction(Movement* newAction)
+{
+	delete action;
+	action = newAction;
+}

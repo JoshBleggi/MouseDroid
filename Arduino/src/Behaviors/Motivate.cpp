@@ -1,9 +1,8 @@
 #include "Behavior.hpp"
 #include "EyeSensor.hpp"
 #include "LaserReadingStruct.hpp"
+#include "MovementType.hpp"
 
-    
-    
     Motivate::Motivate() { }
 
     Motivate::~Motivate() { }
@@ -13,22 +12,21 @@
         action = new ForwardFullPower();
     };
 
-    void Motivate::Run() {
+    void Motivate::Run(Movement* lastAction) {
         EyeSensor* eyes = new EyeSensor();
         LaserReadingStruct readings = eyes->Sense();
-        delete action;
 
         if (readings.Stuck) {
-            action = new Unstick();
+            SetAction(new Unstick());
         }
-        else if (readings.RightTrigger) {
-            action = new Rotate45clockwise();
+        else if (!(readings.RightTrigger || readings.LeftTrigger)) {
+            SetAction(new ForwardFullPower());
         }
-        else if (readings.LeftTrigger) {
-            action = new Rotate45CounterClockwise();
+        else if (lastAction->Type() == MovementType::RotateClockwise || readings.RightTrigger) {
+            SetAction(new Rotate45clockwise());
         }
-        else {
-            action = new ForwardFullPower();
+        else if (lastAction->Type() == MovementType::RotateCounterClockwise || readings.LeftTrigger) {
+            SetAction(new Rotate45CounterClockwise());
         }
 
         delete eyes;

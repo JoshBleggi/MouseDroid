@@ -1,4 +1,3 @@
-#include "Arduino.h"
 #include "Movement.hpp"
 
 Movement::Movement() {
@@ -27,10 +26,18 @@ void ForwardFullPower::Execute() {
     analogWrite(MOTOR_LEFT_PWM, 220);
 }
 
+MovementType ForwardFullPower::Type() {
+    return MovementType::Forward;
+}
+
 void ReverseFullPower::Execute() {
     Movement::SetMotorsReverse();
     analogWrite(MOTOR_RIGHT_PWM, 35);
     analogWrite(MOTOR_LEFT_PWM, 45);
+}
+
+MovementType ReverseFullPower::Type() {
+    return MovementType::Reverse;
 }
 
 void Rotate45clockwise::Execute() {
@@ -41,12 +48,20 @@ void Rotate45clockwise::Execute() {
     Serial.println("Turning right");
 }
 
+MovementType Rotate45clockwise::Type() {
+    return MovementType::RotateClockwise;
+}
+
 void Rotate45CounterClockwise::Execute() {
     Movement::SetMotorsForward();  
     analogWrite(MOTOR_RIGHT_PWM, 220);
     analogWrite(MOTOR_LEFT_PWM, 40);
     Movement::InManeuver = true;
     Serial.println("Turning left");
+}
+
+MovementType Rotate45CounterClockwise::Type() {
+    return MovementType::RotateCounterClockwise;
 }
 
 Unstick::Unstick() { };
@@ -59,6 +74,10 @@ void Unstick::Execute() {
     rot->Execute();  
     delay(500);
     Serial.println("Getting Unstuck");
+}
+
+MovementType Unstick::Type() {
+    return MovementType::GetUnstuck;
 }
 
 Dance::Dance() { };
@@ -118,4 +137,8 @@ void Dance::Execute() {
     analogWrite(MOTOR_LEFT_PWM, 40);
     delay(100);
     Serial.println("dancing");
+}
+
+MovementType Dance::Type() {
+    return MovementType::DoDance;
 }
