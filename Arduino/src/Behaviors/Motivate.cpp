@@ -15,18 +15,22 @@
     void Motivate::Run(Movement* lastAction) {
         EyeSensor* eyes = new EyeSensor();
         LaserReadingStruct readings = eyes->Sense();
+        bool notStraight = (readings.RightTrigger || readings.LeftTrigger);
 
         if (readings.Stuck) {
             SetAction(new Unstick());
         }
-        else if (!(readings.RightTrigger || readings.LeftTrigger)) {
-            SetAction(new ForwardFullPower());
-        }
-        else if (lastAction->Type() == MovementType::RotateClockwise || readings.RightTrigger) {
+        else if (notStraight && lastAction->Type() == MovementType::RotateClockwise) {
             SetAction(new Rotate45clockwise());
         }
-        else if (lastAction->Type() == MovementType::RotateCounterClockwise || readings.LeftTrigger) {
+        else if (notStraight && (lastAction->Type() == MovementType::RotateCounterClockwise || readings.LeftTrigger)) {
             SetAction(new Rotate45CounterClockwise());
+        }
+        else if (readings.RightTrigger) {
+            SetAction(new Rotate45clockwise());
+        }
+        else {
+            SetAction(new ForwardFullPower());
         }
 
         delete eyes;
