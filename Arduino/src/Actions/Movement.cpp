@@ -8,6 +8,8 @@ Movement::~Movement() { }
 
 void Movement::Execute() { }
 
+MovementType Movement::Type() { return MovementType::None; }
+
 void Movement::SetMotorsReverse()  {
     digitalWrite(MOTOR_RIGHT_DIR, HIGH);
     digitalWrite(MOTOR_LEFT_DIR, HIGH);
@@ -64,8 +66,6 @@ MovementType Rotate45CounterClockwise::Type() {
     return MovementType::RotateCounterClockwise;
 }
 
-Unstick::Unstick() { };
-
 void Unstick::Execute() {
     ReverseFullPower* rev = new ReverseFullPower();
     rev->Execute();  
@@ -79,8 +79,6 @@ void Unstick::Execute() {
 MovementType Unstick::Type() {
     return MovementType::GetUnstuck;
 }
-
-Dance::Dance() { };
 
 void Dance::Execute() {
     Movement::InManeuver = true;

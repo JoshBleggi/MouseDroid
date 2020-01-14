@@ -31,10 +31,14 @@ void setup() {
   
   Serial.println("Starting...");
   setSensorIDs();
+  Serial.println("Sensors initialized...");
+
   initializeMotorPins();
+  Serial.println("Motors initialized...");
 
   thinkingCap = new Arbitrator();
-  thinkingCap->SetBehavior(new Motivate(), 0);
+  thinkingCap->SetBehavior(new Boredom(), 0);
+  thinkingCap->SetBehavior(new Motivate(), 1);
 }
 
 void setSensorIDs() {
@@ -47,26 +51,26 @@ void setSensorIDs() {
     Initialize sensor #2 with lox.begin(new_i2c_address) Pick any number but 0x29 and whatever you set the first sensor to
  */
  
-  Serial.println(F("Activating LOX1 and reseting LOX2"));
+  Serial.println(F("Activating VL53L0X and reseting VL6180X"));
   digitalWrite(SHT_VL, LOW);
 
-  Serial.println(F("Initing LOX1"));
+  Serial.println(F("Initing VL53L0X"));
   if(!lox1.begin(LOX1_ADDRESS)) {
-    Serial.println(F("Failed to boot first VL53L0X"));
+    Serial.println(F("Failed to boot VL53L0X"));
     while(1);
   }
   
-  Serial.println(F("SUCCESS LOX1"));
+  Serial.println(F("SUCCESS VL53L0X"));
 
-  Serial.println(F("Activating VL"));
+  Serial.println(F("Activating VL6180X"));
   digitalWrite(SHT_VL, HIGH);
-  Serial.println(F("Initing VL"));
+  Serial.println(F("Initing VL6180X"));
 
   if(!vl.begin()) {
-    Serial.println(F("Failed to boot VL"));
+    Serial.println(F("Failed to boot VL6180X"));
     while(1);
   }
-  Serial.println(F("SUCCESS VL"));
+  Serial.println(F("SUCCESS VL6180X"));
 }
 
 void initializeMotorPins() {

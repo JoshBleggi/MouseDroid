@@ -1,7 +1,6 @@
 #ifndef BEHAVIOR_H
 #define BEHAVIOR_H
 
-#include "EyeSensor.hpp"
 #include "Movement.hpp"
 
 class Behavior {
@@ -23,12 +22,15 @@ public:
 };
 
 class Motivate: public Behavior {
-	private:
-	EyeSensor* eyes;
-
 	public:
 		Motivate();
 		~Motivate();
+		void Init();
+		void Run(Movement* lastAction);  
+};
+
+class Boredom: public Behavior {
+	public:
 		void Init();
 		void Run(Movement* lastAction);  
 };

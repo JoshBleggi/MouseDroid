@@ -44,16 +44,14 @@ class Rotate45CounterClockwise: virtual public Movement {
         MovementType Type();
 };
 
-class Unstick: public Rotate45clockwise, public Rotate45CounterClockwise {
+class Unstick: virtual public Rotate45clockwise, public Rotate45CounterClockwise {
     public:
-        Unstick();
         void Execute();
         MovementType Type();
 };
 
-class Dance: public Rotate45clockwise, public Rotate45CounterClockwise {
+class Dance: virtual public Rotate45clockwise, public Rotate45CounterClockwise {
     public:
-        Dance();
         void Execute();
         MovementType Type();
 };
