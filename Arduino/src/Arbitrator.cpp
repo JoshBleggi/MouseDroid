@@ -1,6 +1,8 @@
 #include "Arbitrator.hpp"
 
-Arbitrator::Arbitrator() { }
+Arbitrator::Arbitrator() {
+	action = new ForwardFullPower();
+ }
 
 Arbitrator::~Arbitrator() { }
 
