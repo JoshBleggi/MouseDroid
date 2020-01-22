@@ -1,4 +1,5 @@
 #include "Arbitrator.hpp"
+#include "freeMemory.cpp"
 
 Arbitrator::Arbitrator() {
 	action = new ForwardFullPower();
@@ -18,7 +19,9 @@ void Arbitrator::Run()
 	// iterate over all behaviors starting from the level 0.
 	for (int i = 0; i < numberOfBehaviors; i++)
 	{
-		behaviors[i]->Run(action);
+		Serial.println("Remaining Memory: " + String(freeMemory()));
+		behaviors[i]->Run();
+		Serial.println("Remaining Memory: " + String(freeMemory()));
 		if (behaviors[i]->DoesSubsume()) {
 			action = behaviors[i]->GetAction();
 			Serial.println("Level " + String(i));
@@ -29,5 +32,6 @@ void Arbitrator::Run()
 
 Movement* Arbitrator::GetAction()
 {
+	Serial.println("Remaining Memory: " + String(freeMemory()));
 	return action;
 }

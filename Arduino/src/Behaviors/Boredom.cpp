@@ -4,13 +4,16 @@
 
     void Boredom::Init() {
          subsume = false;
-         action = new ForwardFullPower();
+         SetAction(new Dance());
      };
 
-    void Boredom::Run(Movement* lastAction) {
+    void Boredom::Run() {
         BoredomSensor* borer = new BoredomSensor();
 
-        subsume = lastAction->Type() != MovementType::DoDance && borer->Sense();
+        subsume = action->Type() != MovementType::DoDance && borer->Sense();
+        if (subsume) {
+            SetAction(new Dance());
+        }
 
         delete borer;
     };

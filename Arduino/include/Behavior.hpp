@@ -15,7 +15,7 @@ public:
 	virtual ~Behavior();
 
 	virtual void Init() = 0;
-	virtual void Run(Movement* lastAction) = 0;
+	virtual void Run() = 0;
 
 	bool DoesSubsume();
 	Movement* GetAction();
@@ -26,13 +26,13 @@ class Motivate: public Behavior {
 		Motivate();
 		~Motivate();
 		void Init();
-		void Run(Movement* lastAction);  
+		void Run();  
 };
 
 class Boredom: public Behavior {
 	public:
 		void Init();
-		void Run(Movement* lastAction);  
+		void Run();  
 };
 
 #endif
