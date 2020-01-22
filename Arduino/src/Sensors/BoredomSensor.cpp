@@ -6,5 +6,5 @@ bool BoredomSensor::Sense() {
         Serial.println(random);
         return true;
     }
-    return false;
+    return true;
 }
