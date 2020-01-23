@@ -9,7 +9,6 @@
 
     void Motivate::Init() {
         subsume = true;
-        action = new ForwardFullPower();
     };
 
     void Motivate::Run() {

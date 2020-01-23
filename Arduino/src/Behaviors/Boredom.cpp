@@ -4,13 +4,14 @@
 
     void Boredom::Init() {
          subsume = false;
-         SetAction(new Dance());
      };
 
     void Boredom::Run() {
         BoredomSensor* borer = new BoredomSensor();
-
-        subsume = action->Type() != MovementType::DoDance && borer->Sense();
+        if (action->Type() == MovementType::DoDance) {
+            Serial.println("We just danced");
+        }
+        subsume = action->Type() != MovementType::DoDance;// && borer->Sense();
         if (subsume) {
             SetAction(new Dance());
         }

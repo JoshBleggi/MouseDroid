@@ -2,7 +2,6 @@
 #define BOREDOMSENSE_H
 
 #include "Arduino.h"
-#include "stdlib.h"
 
 class BoredomSensor {
     public:

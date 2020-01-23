@@ -1,8 +1,6 @@
 #include "Movement.hpp"
 
-Movement::Movement() {
-    Movement::InManeuver = false;
-}
+Movement::Movement() { }
 
 Movement::~Movement() { }
 
@@ -46,7 +44,6 @@ void Rotate45clockwise::Execute() {
     Movement::SetMotorsForward();  
     analogWrite(MOTOR_RIGHT_PWM, 40);
     analogWrite(MOTOR_LEFT_PWM, 220);
-    Movement::InManeuver = true;
     Serial.println("Turning right");
 }
 
@@ -58,7 +55,6 @@ void Rotate45CounterClockwise::Execute() {
     Movement::SetMotorsForward();  
     analogWrite(MOTOR_RIGHT_PWM, 220);
     analogWrite(MOTOR_LEFT_PWM, 40);
-    Movement::InManeuver = true;
     Serial.println("Turning left");
 }
 
@@ -67,11 +63,9 @@ MovementType Rotate45CounterClockwise::Type() {
 }
 
 void Unstick::Execute() {
-    ReverseFullPower* rev = new ReverseFullPower();
-    rev->Execute();  
+    (new ReverseFullPower())->Execute();  
     delay(500);
-    Rotate45clockwise* rot = new Rotate45clockwise();
-    rot->Execute();  
+    (new Rotate45clockwise())->Execute();  
     delay(500);
     Serial.println("Getting Unstuck");
 }

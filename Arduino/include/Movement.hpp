@@ -8,8 +8,6 @@
 
 class Movement {
     public:
-        bool InManeuver;
-
         virtual void Execute();
         Movement();
         virtual ~Movement();
