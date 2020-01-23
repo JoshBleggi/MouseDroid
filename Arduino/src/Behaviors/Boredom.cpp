@@ -6,12 +6,12 @@
          subsume = false;
      };
 
-    void Boredom::Run() {
+    void Boredom::Run(Movement* lastAction) {
         BoredomSensor* borer = new BoredomSensor();
-        if (action->Type() == MovementType::DoDance) {
+        if (lastAction->Type() == MovementType::DoDance) {
             Serial.println("We just danced");
         }
-        subsume = action->Type() != MovementType::DoDance;// && borer->Sense();
+        subsume = lastAction->Type() != MovementType::DoDance;// && borer->Sense();
         if (subsume) {
             SetAction(new Dance());
         }

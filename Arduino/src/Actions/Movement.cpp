@@ -76,7 +76,7 @@ MovementType Unstick::Type() {
 
 void Dance::Execute() {
     Serial.println("Dancing");
-    SetMotorsForward();  
+    Movement::SetMotorsForward();  
     analogWrite(MOTOR_RIGHT_PWM, 110);
     analogWrite(MOTOR_LEFT_PWM, 40);
     delay(100);
@@ -89,7 +89,7 @@ void Dance::Execute() {
     analogWrite(MOTOR_RIGHT_PWM, 40);
     analogWrite(MOTOR_LEFT_PWM, 110);
     delay(100);
-    SetMotorsReverse(); 
+    Movement::SetMotorsReverse(); 
     analogWrite(MOTOR_RIGHT_PWM, 40);
     analogWrite(MOTOR_LEFT_PWM, 110);
     delay(100);
@@ -102,7 +102,7 @@ void Dance::Execute() {
     analogWrite(MOTOR_RIGHT_PWM, 110);
     analogWrite(MOTOR_LEFT_PWM, 40);
     delay(100);    
-    SetMotorsForward();  
+    Movement::SetMotorsForward();  
     analogWrite(MOTOR_RIGHT_PWM, 110);
     analogWrite(MOTOR_LEFT_PWM, 40);
     delay(100);
@@ -115,7 +115,7 @@ void Dance::Execute() {
     analogWrite(MOTOR_RIGHT_PWM, 40);
     analogWrite(MOTOR_LEFT_PWM, 110);
     delay(100);
-    SetMotorsReverse(); 
+    Movement::SetMotorsReverse(); 
     analogWrite(MOTOR_RIGHT_PWM, 40);
     analogWrite(MOTOR_LEFT_PWM, 110);
     delay(100);

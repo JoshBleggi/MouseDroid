@@ -15,10 +15,11 @@ void Arbitrator::SetBehavior(Behavior* behavior, int level)
 
 void Arbitrator::Run()
 {
+	int numberOfBehaviors = sizeof(behaviors) / sizeof(behaviors[0]);
 	// iterate over all behaviors starting from the level 0.
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < numberOfBehaviors; i++)
 	{
-		behaviors[i]->Run();
+		behaviors[i]->Run(action);
 		if (behaviors[i]->DoesSubsume()) {
 			delete action;
 			action = behaviors[i]->GetAction();
