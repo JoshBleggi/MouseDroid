@@ -2,7 +2,6 @@
 #include "Arbitrator.hpp"
 #include "Constants.hpp"
 #include "EyeSensor.hpp"
-#include "freeMemory.cpp"
 
 // address we will assign if dual sensor is present
 #define LOX1_ADDRESS 0x30
@@ -17,7 +16,6 @@ void initializeMotorPins();
 void loop() {
   thinkingCap->Run();
   thinkingCap->GetAction()->Execute();
-  Serial.println("Remaining Memory: " + String(freeMemory()));
 }
 
 //Setup section

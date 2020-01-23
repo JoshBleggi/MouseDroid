@@ -1,10 +1,8 @@
 #include "BoredomSensor.hpp"
 
 bool BoredomSensor::Sense() {
-    short random = rand() % 1000;
-    if((random) < 5) {
-        Serial.println(random);
+    if(random(10000) <= 1) {
         return true;
     }
-    return true;
+    return false;
 }

@@ -21,7 +21,6 @@ void Arbitrator::Run()
 	{
 		behaviors[i]->Run(action);
 		if (behaviors[i]->DoesSubsume()) {
-			delete action;
 			action = behaviors[i]->GetAction();
 			Serial.println("Level " + String(i));
 			break;

@@ -11,7 +11,7 @@
         if (lastAction->Type() == MovementType::DoDance) {
             Serial.println("We just danced");
         }
-        subsume = lastAction->Type() != MovementType::DoDance;// && borer->Sense();
+        subsume = lastAction->Type() != MovementType::DoDance && borer->Sense();
         if (subsume) {
             SetAction(new Dance());
         }
