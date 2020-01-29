@@ -5,10 +5,8 @@
 
 // address we will assign if dual sensor is present
 #define LOX1_ADDRESS 0x30
-#define LOX2_ADDRESS 0x29
 // set the pins to shutdown
-#define SHT_LOX1 13
-#define SHT_LOX2 8
+#define SHT_VL 13
 
 Arbitrator* thinkingCap;
 
@@ -22,11 +20,12 @@ void loop() {
 
 //Setup section
 void setup() {
-  Serial.println("Hello World");
   Serial.begin(115200);
 
   // wait until serial port opens for native USB devices
   while (! Serial) { delay(1); }
+
+  pinMode(SHT_VL, OUTPUT);
   
   Serial.println("Starting...");
   setSensorIDs();
@@ -49,41 +48,27 @@ void setSensorIDs() {
     Keep sensor #1 awake, and now bring sensor #2 out of reset by setting its XSHUT pin high.
     Initialize sensor #2 with lox.begin(new_i2c_address) Pick any number but 0x29 and whatever you set the first sensor to
  */
-
-  Wire.begin();
  
-  pinMode(SHT_LOX1, OUTPUT);
-  pinMode(SHT_LOX2, OUTPUT);
+  Serial.println(F("Activating VL53L0X and reseting VL6180X"));
+  digitalWrite(SHT_VL, LOW);
 
-  Serial.println(F("Activating Left Eye and deactivating Right Eye"));
-  digitalWrite(SHT_LOX2, HIGH);
-  digitalWrite(SHT_LOX1, LOW);
-
-  delay(10);
-
-  Serial.println(F("Initing Left Eye"));
-  lox1.setAddress(LOX1_ADDRESS);
-  if(!lox1.init()) {
-    Serial.println(F("Failed to boot Left Eye"));
+  Serial.println(F("Initing VL53L0X"));
+  if(!lox1.begin(LOX1_ADDRESS)) {
+    Serial.println(F("Failed to boot VL53L0X"));
     while(1);
   }
   
-  Serial.println(F("SUCCESS Left Eye"));
+  Serial.println(F("SUCCESS VL53L0X"));
 
-  Serial.println(F("Activating Right Eye"));
-  digitalWrite(SHT_LOX1, HIGH);
-  Serial.println(F("Deactivating Left Eye"));
-  digitalWrite(SHT_LOX2, LOW);
-  Serial.println(F("Initing Right Eye"));
+  Serial.println(F("Activating VL6180X"));
+  digitalWrite(SHT_VL, HIGH);
+  Serial.println(F("Initing VL6180X"));
 
-  delay(10);
-
-  lox2.setAddress(LOX2_ADDRESS);
-  if(!lox2.init()) {
-    Serial.println(F("Failed to boot Right Eye"));
+  if(!vl.begin()) {
+    Serial.println(F("Failed to boot VL6180X"));
     while(1);
   }
-  Serial.println(F("SUCCESS Right Eye"));
+  Serial.println(F("SUCCESS VL6180X"));
 }
 
 void initializeMotorPins() {

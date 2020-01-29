@@ -1,8 +1,8 @@
 #ifndef EYESENSE_H
 #define EYESENSE_H
 
-#include <Wire.h>
-#include <VL53L0X.h>
+#include <Adafruit_VL6180X.h>
+#include <Adafruit_VL53L0X.h>
 #include "LaserReadingStruct.hpp"
 
 extern const short MILLIS_BEFORE_CHANGE;
@@ -12,8 +12,11 @@ extern short lastMeasurementRight;
 extern long leftStateChangeTime;
 extern long rightStateChangeTime;
 // objects for the vl53l0x
-extern VL53L0X lox1;
-extern VL53L0X lox2;
+extern Adafruit_VL6180X vl;
+extern Adafruit_VL53L0X lox1;
+
+// this holds the measurement
+extern VL53L0X_RangingMeasurementData_t measure1;
 
 class EyeSensor {
     public:
@@ -21,7 +24,7 @@ class EyeSensor {
         LaserReadingStruct Sense();
     private:
         LaserReadingStruct getState(short leftSensorReading, short rightSensorReading);
-        bool isRobotStuck(short &leftSensorReading, short &rightSensorReading, short rightMaxReading);
+        bool isRobotStuck(short &leftSensorReading, short leftMaxReading, short &rightSensorReading, short rightMaxReading);
         bool isDifInThreshold(short &reading, short &lastMeasurement, long &lastChangeTime, short maxReading);
 };
 

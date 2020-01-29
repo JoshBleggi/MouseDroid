@@ -7,8 +7,8 @@ short lastMeasurementRight = 0;
 long leftStateChangeTime = 0;
 long rightStateChangeTime = 0;
 // objects for the vl53l0x
-VL53L0X lox1;
-VL53L0X lox2;
+Adafruit_VL6180X vl = Adafruit_VL6180X();
+Adafruit_VL53L0X lox1 = Adafruit_VL53L0X();
 
 LaserReadingStruct Sense();
 LaserReadingStruct getState(short leftSensorReading, short rightSensorReading);
@@ -21,14 +21,14 @@ EyeSensor::EyeSensor() {
 }
 
 LaserReadingStruct EyeSensor::Sense() {
-  long leftSensorReading, rightSensorReading;
-  Serial.println("About to read distance");
+  VL53L0X_RangingMeasurementData_t measure1;
+  short leftSensorReading, rightSensorReading;
+  lox1.getSingleRangingMeasurement(&measure1); // pass in 'true' to get debug data printout!
 
-  leftSensorReading = lox1.readRangeSingleMillimeters();
+  leftSensorReading = (short)measure1.RangeMilliMeter;
+  rightSensorReading = (short)vl.readRange();
   // print sensor one reading
   Serial.println("Left Sensor: " + String(leftSensorReading));
-
-  rightSensorReading = lox2.readRangeSingleMillimeters();
 
   // print sensor two reading
   Serial.println("Right Sensor: " + String(rightSensorReading));
@@ -37,20 +37,20 @@ LaserReadingStruct EyeSensor::Sense() {
 }
 
 LaserReadingStruct EyeSensor::getState(short leftSensorReading, short rightSensorReading) {
-  const short TRIGGER_MAX = 650;
-  const short MAX_READING = 8190;
+  const short LEFT_TRIGGER_MAX = 650, RIGHT_TRIGGER_MAX = 255;
+  const short LEFT_MAX_READING = 8190, RIGHT_MAX_READING = 255;
 
   LaserReadingStruct readings;
-  readings.Stuck = isRobotStuck(leftSensorReading, rightSensorReading, MAX_READING);
-  readings.LeftTrigger = leftSensorReading > 0 && leftSensorReading < TRIGGER_MAX;
-  readings.RightTrigger = rightSensorReading > 0 && rightSensorReading < TRIGGER_MAX;
+  readings.Stuck = isRobotStuck(leftSensorReading, LEFT_MAX_READING, rightSensorReading, RIGHT_MAX_READING);
+  readings.LeftTrigger = leftSensorReading > 0 && leftSensorReading < LEFT_TRIGGER_MAX;
+  readings.RightTrigger = rightSensorReading > 0 && rightSensorReading < RIGHT_TRIGGER_MAX;
 
   return readings;
 }
 
-bool EyeSensor::isRobotStuck(short &leftSensorReading, short &rightSensorReading, short MaxReading) {
-  if (isDifInThreshold(leftSensorReading, lastMeasurementLeft, leftStateChangeTime, MaxReading) || 
-      isDifInThreshold(rightSensorReading, lastMeasurementRight, rightStateChangeTime, MaxReading)) {
+bool EyeSensor::isRobotStuck(short &leftSensorReading, short leftMaxReading, short &rightSensorReading, short rightMaxReading) {
+  if (isDifInThreshold(leftSensorReading, lastMeasurementLeft, leftStateChangeTime, leftMaxReading) || 
+      isDifInThreshold(rightSensorReading, lastMeasurementRight, rightStateChangeTime, rightMaxReading)) {
     return true;
   }
   return false;
@@ -62,9 +62,9 @@ bool EyeSensor::isDifInThreshold(short &reading, short &lastMeasurement, long &l
   if (dif < 0) {
     dif = dif * -1;
   }
-  // Serial.println("Dif: " + String(dif) + " Last Change Time: " + String(lastChangeTime));
+  //Serial.println("Dif: " + String(dif) + " Last Change Time: " + String(lastChangeTime));
   if (dif < threshold && reading <= maxReading && ((millis() - lastChangeTime) > MILLIS_BEFORE_CHANGE)) {
-    // Serial.println("STUCK STUCK STUCK STUCK STUCK");
+    //Serial.println("STUCK STUCK STUCK STUCK STUCK");
     return true;
   }
   if (dif > threshold || reading >= maxReading){
