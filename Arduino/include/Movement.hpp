@@ -1,7 +1,6 @@
 #ifndef MOVEMENT_H
 #define MOVEMENT_H
 
-#include "ActionComparer.hpp"
 #include "Arduino.h"
 #include "Constants.hpp"
 #include "MovementType.hpp"
