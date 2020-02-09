@@ -1,6 +1,9 @@
 #include "Behavior.hpp"
 
-Behavior::Behavior() { }
+Behavior::Behavior() {
+	subsume = false;
+	action = nullptr;
+ }
 
 Behavior::~Behavior() { }
 

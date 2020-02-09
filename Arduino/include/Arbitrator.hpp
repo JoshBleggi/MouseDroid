@@ -8,7 +8,7 @@
 class Arbitrator {
 
 private:
-	Behavior* behaviors[2];
+	Behavior* behaviors[2] = { };
 	Movement* action;
 
 public:
