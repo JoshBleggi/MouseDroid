@@ -52,14 +52,18 @@ void setSensorIDs() {
 
   Wire.begin();
  
+ 
+  Serial.println(F("Powering Eyes off to restart and keep state consistent"));
   pinMode(SHT_LOX1, OUTPUT);
   pinMode(SHT_LOX2, OUTPUT);
 
-  Serial.println(F("Activating Left Eye and deactivating Right Eye"));
-  digitalWrite(SHT_LOX2, HIGH);
+  digitalWrite(SHT_LOX2, LOW);
   digitalWrite(SHT_LOX1, LOW);
 
   delay(10);
+
+  Serial.println(F("Activating Left Eye"));
+  pinMode(SHT_LOX1, INPUT);
 
   Serial.println(F("Initing Left Eye"));
   lox1.setAddress(LOX1_ADDRESS);
@@ -71,9 +75,7 @@ void setSensorIDs() {
   Serial.println(F("SUCCESS Left Eye"));
 
   Serial.println(F("Activating Right Eye"));
-  digitalWrite(SHT_LOX1, HIGH);
-  Serial.println(F("Deactivating Left Eye"));
-  digitalWrite(SHT_LOX2, LOW);
+  pinMode(SHT_LOX2, INPUT);
   Serial.println(F("Initing Right Eye"));
 
   delay(10);
