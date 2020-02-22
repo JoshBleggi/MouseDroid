@@ -37,7 +37,7 @@ LaserReadingStruct EyeSensor::Sense() {
 }
 
 LaserReadingStruct EyeSensor::getState(short leftSensorReading, short rightSensorReading) {
-  const short TRIGGER_MAX = 650;
+  const short TRIGGER_MAX = 850;
   const short MAX_READING = 8190;
 
   LaserReadingStruct readings;
