@@ -3,6 +3,7 @@
 
 #include <Wire.h>
 #include <VL53L0X.h>
+#include "Constants.cpp"
 #include "LaserReadingStruct.hpp"
 
 extern const short MILLIS_BEFORE_CHANGE;

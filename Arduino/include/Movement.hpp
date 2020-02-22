@@ -2,7 +2,7 @@
 #define MOVEMENT_H
 
 #include "Arduino.h"
-#include "Constants.hpp"
+#include "Constants.cpp"
 #include "MovementType.hpp"
 
 class Movement {

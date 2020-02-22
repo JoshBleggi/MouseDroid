@@ -1,6 +1,6 @@
 #include "Arduino.h"
 #include "Arbitrator.hpp"
-#include "Constants.hpp"
+#include "Constants.cpp"
 #include "EyeSensor.hpp"
 
 // address we will assign if dual sensor is present
