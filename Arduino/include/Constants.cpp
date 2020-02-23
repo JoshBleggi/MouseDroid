@@ -6,7 +6,8 @@
 #define MOTOR_LEFT_PWM 11
 #define MOTOR_LEFT_DIR 12
 
-#define TRIGGER_MAX 850
+#define MILLIS_BEFORE_CHANGE 2500
+#define TRIGGER_MAX 700
 #define MAX_READING 8190
 
 #endif

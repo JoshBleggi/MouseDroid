@@ -3,9 +3,8 @@
 
 struct LaserReadingStruct
 {
-    bool LeftTrigger;
-    bool RightTrigger;
-    bool Stuck;
+    short LeftReading;
+    short RightReading;
 };
 
 #endif

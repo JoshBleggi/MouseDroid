@@ -26,7 +26,11 @@ class Motivate: public Behavior {
 		Motivate();
 		~Motivate();
 		void Init();
-		void Run(Movement* lastAction);  
+		void Run(Movement* lastAction); 
+
+	private:
+        bool isRobotStuck(short &leftSensorReading, short &rightSensorReading, short rightMaxReading);
+        bool isDifInThreshold(short &reading, short &lastMeasurement, long &lastChangeTime, short maxReading); 
 };
 
 class Boredom: public Behavior {
